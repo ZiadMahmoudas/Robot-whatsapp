@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Sora:wght@400;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 <link rel="stylesheet" href="style.css">
 
 <style>
@@ -136,7 +137,7 @@
 @keyframes scrollDot { 0%,100%{transform:translateY(0);opacity:1} 50%{transform:translateY(12px);opacity:.3} }
 
 /* ══════════════════════════════════════
-   SECTION BASE (used for all 5)
+   SECTION BASE
 ══════════════════════════════════════ */
 .section {
   padding:100px 48px;
@@ -194,7 +195,7 @@
 .prog-dot:hover::after { opacity:1; }
 
 /* ══════════════════════════════════════
-   SECTION DIVIDER (glowing line)
+   SECTION DIVIDER
 ══════════════════════════════════════ */
 .section-divider {
   width:100%; height:1px;
@@ -243,9 +244,7 @@
 .testimonials-inner .section-header { margin-bottom:48px; }
 
 .swiper-testimonials { overflow:visible; padding-bottom:32px !important; }
-.swiper-testimonials .swiper-slide {
-  height:auto; /* equal height */
-}
+.swiper-testimonials .swiper-slide { height:auto; }
 
 .review-card {
   background:var(--card); border:1px solid var(--border);
@@ -279,7 +278,6 @@
 .swiper-pagination-bullet { background:var(--border2) !important; opacity:1 !important; }
 .swiper-pagination-bullet-active { background:var(--gold) !important; }
 
-/* Prev/Next custom arrows */
 .swiper-nav { display:flex; gap:10px; margin-top:24px; justify-content:center; }
 .sw-btn {
   width:42px; height:42px; border-radius:50%;
@@ -376,8 +374,18 @@ footer {
 .empty-state h3 { font-size:17px; color:var(--text2); margin-bottom:6px; }
 .empty-state p  { font-size:13px; color:var(--text3); }
 
-/* GSAP will set initial states but we define them here too */
-/* .gsap-reveal { opacity:0; } */
+/* ══════════════════════════════════════
+   INTERSECTION OBSERVER ANIMATIONS
+══════════════════════════════════════ */
+.reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.65s ease, transform 0.65s ease;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
 
 /* ══════════════════════════════════════
    RESPONSIVE
@@ -456,14 +464,14 @@ footer {
     أكبر متجر متنوع في مصر
   </div>
 
-  <h1 class="gsap-reveal">اكتشف<br><em>منتجاتنا</em> المميزة</h1>
+  <h1>اكتشف<br><em>منتجاتنا</em> المميزة</h1>
 
-  <p class="hero-sub gsap-reveal">
+  <p class="hero-sub">
     أفضل المنتجات بأسعار لا تُنافس — أدوات مطبخ،<br>
     مستلزمات أطفال، إلكترونيات، وأكثر
   </p>
 
-  <div class="hero-cats gsap-reveal" id="hero-cats">
+  <div class="hero-cats" id="hero-cats">
     <a href="#sec-kitchen"  class="hero-cat-pill gold">  <span class="pill-icon">🍳</span> أدوات مطبخ     <span class="pill-count" id="cnt-kitchen">—</span></a>
     <a href="#sec-kids"     class="hero-cat-pill blue">  <span class="pill-icon">🧸</span> مستلزمات أطفال <span class="pill-count" id="cnt-kids">—</span></a>
     <a href="#sec-electric" class="hero-cat-pill green"> <span class="pill-icon">⚡</span> كهربائيات       <span class="pill-count" id="cnt-electric">—</span></a>
@@ -478,7 +486,7 @@ footer {
 </section>
 
 <!-- ════════ FEATURES STRIP ════════ -->
-<div class="features-strip gsap-reveal">
+<div class="features-strip">
   <div class="features-grid">
     <div class="feature-item">
       <div class="feature-icon">🚚</div>
@@ -503,70 +511,70 @@ footer {
 
 <!-- ════════ SECTION 1: KITCHEN ════════ -->
 <div id="sec-kitchen" class="section" data-section="0">
-  <div class="section-header gsap-reveal">
+  <div class="section-header reveal">
     <div>
       <div class="section-label"><span></span>القسم الأول<span></span></div>
       <h2 class="section-title gold">أدوات <em>المطبخ</em></h2>
     </div>
     <span class="section-view-all" onclick="scrollToSection('sec-kids')">التالي: أطفال ←</span>
   </div>
-  <div class="products-grid gsap-reveal" id="grid-kitchen"></div>
+  <div class="products-grid" id="grid-kitchen"></div>
 </div>
 
 <div class="section-divider"></div>
 
 <!-- ════════ SECTION 2: KIDS ════════ -->
 <div id="sec-kids" class="section" data-section="1">
-  <div class="section-header gsap-reveal">
+  <div class="section-header reveal">
     <div>
       <div class="section-label"><span></span>القسم الثاني<span></span></div>
       <h2 class="section-title blue">مستلزمات <em>الأطفال</em></h2>
     </div>
     <span class="section-view-all" onclick="scrollToSection('sec-electric')">التالي: كهربائيات ←</span>
   </div>
-  <div class="products-grid gsap-reveal" id="grid-kids"></div>
+  <div class="products-grid" id="grid-kids"></div>
 </div>
 
 <div class="section-divider"></div>
 
 <!-- ════════ SECTION 3: ELECTRIC ════════ -->
 <div id="sec-electric" class="section" data-section="2">
-  <div class="section-header gsap-reveal">
+  <div class="section-header reveal">
     <div>
       <div class="section-label"><span></span>القسم الثالث<span></span></div>
       <h2 class="section-title green">الأدوات <em>الكهربائية</em></h2>
     </div>
     <span class="section-view-all" onclick="scrollToSection('sec-phones')">التالي: موبايلات ←</span>
   </div>
-  <div class="products-grid gsap-reveal" id="grid-electric"></div>
+  <div class="products-grid" id="grid-electric"></div>
 </div>
 
 <div class="section-divider"></div>
 
 <!-- ════════ SECTION 4: PHONES ════════ -->
 <div id="sec-phones" class="section" data-section="3">
-  <div class="section-header gsap-reveal">
+  <div class="section-header reveal">
     <div>
       <div class="section-label"><span></span>القسم الرابع<span></span></div>
       <h2 class="section-title purple">مستلزمات <em>الهواتف</em></h2>
     </div>
     <span class="section-view-all" onclick="scrollToSection('sec-decor')">التالي: ديكور ←</span>
   </div>
-  <div class="products-grid gsap-reveal" id="grid-phones"></div>
+  <div class="products-grid" id="grid-phones"></div>
 </div>
 
 <div class="section-divider"></div>
 
 <!-- ════════ SECTION 5: DECOR ════════ -->
 <div id="sec-decor" class="section" data-section="4">
-  <div class="section-header gsap-reveal">
+  <div class="section-header reveal">
     <div>
       <div class="section-label"><span></span>القسم الخامس<span></span></div>
       <h2 class="section-title red">عالم <em>الديكور</em></h2>
     </div>
     <span class="section-view-all" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑ للأعلى</span>
   </div>
-  <div class="products-grid gsap-reveal" id="grid-decor"></div>
+  <div class="products-grid" id="grid-decor"></div>
 </div>
 
 <div class="section-divider"></div>
@@ -574,7 +582,7 @@ footer {
 <!-- ════════ TESTIMONIALS ════════ -->
 <section class="testimonials-section" id="sec-testimonials">
   <div class="testimonials-inner">
-    <div class="section-header gsap-reveal">
+    <div class="section-header reveal">
       <div>
         <div class="section-label"><span></span>آراء العملاء<span></span></div>
         <h2 class="section-title gold">ماذا قالوا <em>عنا؟</em></h2>
@@ -582,9 +590,7 @@ footer {
     </div>
 
     <div class="swiper swiper-testimonials">
-      <div class="swiper-wrapper" id="reviews-wrapper">
-        <!-- Injected by JS -->
-      </div>
+      <div class="swiper-wrapper" id="reviews-wrapper"></div>
       <div class="swiper-pagination"></div>
     </div>
 
@@ -654,9 +660,7 @@ footer {
   <span class="toast-msg">تم بنجاح</span>
 </div>
 
-<!-- Scripts -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js"></script>
+<!-- Scripts — NO GSAP -->
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 <script src="data.js"></script>
 <script src="store.js"></script>

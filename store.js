@@ -1,13 +1,3 @@
-(function () {
-  if (!document.querySelector('link[href*="font-awesome"]')) {
-    const fa = document.createElement("link");
-    fa.rel = "stylesheet";
-    fa.href =
-      "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css";
-    document.head.appendChild(fa);
-  }
-})();
-
 /* ── Products ── */
 let products = getProducts();
 
@@ -179,28 +169,72 @@ function highlightNavLink() {
   });
 }
 
+/* ────────────────────────────────────
+   INTERSECTION OBSERVER ANIMATIONS
+──────────────────────────────────── */
+function initObserver() {
+  /* ── General scroll reveal ── */
+  const revealObs = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting) {
+          e.target.classList.add("visible");
+          revealObs.unobserve(e.target);
+        }
+      });
+    },
+    { threshold: 0.12 }
+  );
 
-function registerCardAnimations() {
+  /* ── Hero elements — stagger on load ── */
+  const heroOrder = [
+    ".hero-eyebrow",
+    ".hero h1",
+    ".hero-sub",
+    ".hero-scroll",
+  ];
+  heroOrder.forEach((sel, i) => {
+    const el = document.querySelector(sel);
+    if (!el) return;
+    el.classList.add("reveal");
+    setTimeout(() => el.classList.add("visible"), 100 + i * 130);
+  });
+
+  /* ── Hero pills stagger ── */
+  document.querySelectorAll(".hero-cat-pill").forEach((el, i) => {
+    el.classList.add("reveal");
+    setTimeout(() => el.classList.add("visible"), 380 + i * 85);
+  });
+
+  /* ── Features strip ── */
+  document.querySelectorAll(".feature-item").forEach((el) => {
+    el.classList.add("reveal");
+    revealObs.observe(el);
+  });
+
+  /* ── Section headers (already have .reveal in HTML) ── */
+  document.querySelectorAll(".section-header.reveal").forEach((el) => {
+    revealObs.observe(el);
+  });
+
+  /* ── Product cards — observe each grid ── */
+  const cardObs = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((e) => {
+        if (!e.isIntersecting) return;
+        e.target.querySelectorAll(".product-card").forEach((card, i) => {
+          card.classList.add("reveal");
+          setTimeout(() => card.classList.add("visible"), i * 75);
+        });
+        cardObs.unobserve(e.target);
+      });
+    },
+    { threshold: 0.06 }
+  );
+
   ["kitchen", "kids", "electric", "phones", "decor"].forEach((cat) => {
     const grid = document.getElementById("grid-" + cat);
-    if (!grid) return;
-
-    const cards = grid.querySelectorAll(".product-card");
-    if (!cards.length) return;
-
-    gsap.from(cards, {
-      scrollTrigger: {
-        trigger: grid,
-        start: "top 88%",
-        once: true,
-      },
-      y: 38,
-      opacity: 0,
-      duration: 0.55,
-      stagger: 0.08,
-      ease: "power2.out",
-      clearProps: "all",
-    });
+    if (grid) cardObs.observe(grid);
   });
 }
 
@@ -277,7 +311,6 @@ function initSwiper() {
   `,
   ).join("");
 
-  /* Update prev/next button icons */
   const prevBtn = document.getElementById("sw-prev");
   const nextBtn = document.getElementById("sw-next");
   if (prevBtn) prevBtn.innerHTML = '<i class="fa-solid fa-chevron-right"></i>';
@@ -323,7 +356,6 @@ function patchNavIcons() {
     }
   });
 
-  /* Hero category pills */
   const pillIconMap = {
     kitchen: "fa-solid fa-utensils",
     kids: "fa-solid fa-baby",
@@ -338,7 +370,6 @@ function patchNavIcons() {
     if (pill) pill.innerHTML = `<i class="${pillIconMap[cat]}"></i>`;
   });
 
-  /* Features strip */
   const featureIconMap = [
     ["توصيل سريع", "fa-solid fa-truck-fast"],
     ["جودة مضمونة", "fa-solid fa-gem"],
@@ -346,8 +377,7 @@ function patchNavIcons() {
     ["دعم على واتساب", "fa-brands fa-whatsapp"],
   ];
   document.querySelectorAll(".feature-item").forEach((item) => {
-    const title =
-      item.querySelector(".feature-title")?.textContent.trim() || "";
+    const title = item.querySelector(".feature-title")?.textContent.trim() || "";
     const iconEl = item.querySelector(".feature-icon");
     if (!iconEl) return;
     for (const [label, cls] of featureIconMap) {
@@ -358,7 +388,6 @@ function patchNavIcons() {
     }
   });
 
-  /* Footer social buttons */
   const socialMap = [
     ["فيسبوك", "fa-brands fa-facebook-f"],
     ["انستغرام", "fa-brands fa-instagram"],
@@ -375,13 +404,10 @@ function patchNavIcons() {
     }
   });
 
-  /* Logo mark */
-  const logoMarks = document.querySelectorAll(".logo-mark");
-  logoMarks.forEach((lm) => {
+  document.querySelectorAll(".logo-mark").forEach((lm) => {
     lm.innerHTML = '<i class="fa-solid fa-bag-shopping"></i>';
   });
 
-  /* Mobile nav icons */
   const mobileIconMap = {
     "أدوات مطبخ": "fa-solid fa-utensils",
     "مستلزمات أطفال": "fa-solid fa-baby",
@@ -400,16 +426,13 @@ function patchNavIcons() {
     }
   });
 
-  /* nav-dashboard button */
   const dashBtn = document.querySelector(".nav-dashboard");
   if (dashBtn)
     dashBtn.innerHTML = '<i class="fa-solid fa-gear"></i> لوحة التحكم';
 
-  /* Scroll indicator text */
   const scrollLabel = document.querySelector(".hero-scroll span");
   if (scrollLabel)
-    scrollLabel.innerHTML =
-      '<i class="fa-solid fa-angles-down"></i> اسكرول للأسفل';
+    scrollLabel.innerHTML = '<i class="fa-solid fa-angles-down"></i> اسكرول للأسفل';
 }
 
 /* ────────────────────────────────────
@@ -417,95 +440,13 @@ function patchNavIcons() {
 ──────────────────────────────────── */
 document.addEventListener("DOMContentLoaded", () => {
   initGrids();
-
   patchNavIcons();
-
   initWAFloat();
 
   requestAnimationFrame(() => {
     requestAnimationFrame(() => {
-      /* double-rAF ensures DOM is fully painted */
-      initGSAP();
+      initObserver();
       initSwiper();
     });
   });
 });
-
-
-function initGSAP() {
-  if (typeof gsap === "undefined" || typeof ScrollTrigger === "undefined") return;
-
-  gsap.registerPlugin(ScrollTrigger);
-
-  ScrollTrigger.defaults({
-    invalidateOnRefresh: true,
-  });
-
-  /* Hero */
-  gsap
-    .timeline({ defaults: { ease: "power3.out" } })
-    .from(".hero-eyebrow", { y: -24, opacity: 0, duration: 0.7 })
-    .from(".hero h1", { y: 40, opacity: 0, duration: 0.9 }, "-=0.45")
-    .from(".hero-sub", { y: 24, opacity: 0, duration: 0.75 }, "-=0.55")
-    .from(".hero-cats .hero-cat-pill", {
-      y: 22,
-      opacity: 0,
-      duration: 0.55,
-      stagger: 0.08,
-      ease: "power2.out",
-    }, "-=0.45")
-    .from(".hero-scroll", { opacity: 0, y: 10, duration: 0.6 }, "-=0.3");
-
-  /* Features strip */
-  gsap.from(".feature-item", {
-    scrollTrigger: {
-      trigger: ".features-strip",
-      start: "top 82%",
-      once: true,
-    },
-    y: 26,
-    opacity: 0,
-    duration: 0.65,
-    stagger: 0.12,
-    ease: "power2.out",
-  });
-
-  /* Section headers */
-  ["kitchen", "kids", "electric", "phones", "decor"].forEach((cat) => {
-    const sec = document.getElementById("sec-" + cat);
-    const header = sec?.querySelector(".section-header");
-    if (!sec || !header) return;
-
-    gsap.from(header, {
-      scrollTrigger: {
-        trigger: sec,
-        start: "top 80%",
-        once: true,
-      },
-      y: 32,
-      opacity: 0,
-      duration: 0.7,
-      ease: "power3.out",
-    });
-  });
-
-  /* Testimonials */
-  const testimonialHeader = document.querySelector("#sec-testimonials .section-header");
-  if (testimonialHeader) {
-    gsap.from(testimonialHeader, {
-      scrollTrigger: {
-        trigger: "#sec-testimonials",
-        start: "top 82%",
-        once: true,
-      },
-      y: 28,
-      opacity: 0,
-      duration: 0.7,
-      ease: "power3.out",
-    });
-  }
-
-  registerCardAnimations();
-
-  ScrollTrigger.refresh();
-}
