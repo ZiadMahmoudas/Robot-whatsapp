@@ -13,7 +13,7 @@ const WA_ACCESS_TOKEN   = process.env.WA_ACCESS_TOKEN   || 'EAAxxxxx...';
 const WA_PHONE_NUMBER_ID = process.env.WA_PHONE_NUMBER_ID || '12345678';
 const SUPABASE_URL      = process.env.SUPABASE_URL      || 'https://xxxx.supabase.co';
 const SUPABASE_KEY      = process.env.SUPABASE_KEY      || 'eyJhbGci...';
-const SHEETS_URL        = process.env.SHEETS_URL        || 'https://script.google.com/macros/s/xxx/exec';
+const SHEETS_URL        = process.env.SHEETS_URL        || 'https://script.google.com/macros/s/AKfycby2qzGnT3O1yJfCZoOPvTTMjYY0jlJycOx2VQInSGl-XfQe3AHM5RSwPaKL4U_WlLTZ/exec';
 
 // ─── BOT SESSIONS (في الإنتاج استخدم Supabase أو Redis) ───
 const sessions = new Map();
