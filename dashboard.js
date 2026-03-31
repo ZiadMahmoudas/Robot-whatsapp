@@ -38,7 +38,7 @@ function showSection(name, navEl) {
   if (name === 'products')    renderProductsTable();
   if (name === 'orders')      renderOrdersTable();
   if (name === 'add-product' && !editingId) clearProductForm();
-  if (name === 'settings')    loadSettings();
+//   if (name === 'settings')    loadSettings();
 }
 
 /* ── Sidebar mobile toggle ── */
@@ -282,12 +282,12 @@ window.handleBotOrder = function(data) {
 /* ────────────────────────────────────
    SETTINGS
 ──────────────────────────────────── */
-function loadSettings() {
-  document.getElementById('cfg-url').value    = CONFIG.supabaseUrl;
-  document.getElementById('cfg-key').value    = CONFIG.supabaseKey;
-  document.getElementById('cfg-wa').value     = CONFIG.waNumber;
-  document.getElementById('cfg-sheets').value = CONFIG.sheetsUrl;
-}
+// function loadSettings() {
+//   document.getElementById('cfg-url').value    = CONFIG.supabaseUrl;
+//   document.getElementById('cfg-key').value    = CONFIG.supabaseKey;
+//   document.getElementById('cfg-wa').value     = CONFIG.waNumber;
+//   document.getElementById('cfg-sheets').value = CONFIG.sheetsUrl;
+// }
 
 function saveSettings() {
   CONFIG.supabaseUrl = document.getElementById('cfg-url').value.trim();
