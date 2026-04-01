@@ -6,7 +6,7 @@
 const CONFIG = {
   supabaseUrl: localStorage.getItem('supabase_url') || 'https://ijpdwjmevzxihziuxgmw.supabase.co',
   supabaseKey: localStorage.getItem('supabase_key') || 'sb_publishable_0L2vAQMsVxi1aYEmGTalxQ_iMZ3jnsz',
-  waNumber:    localStorage.getItem('wa_number')    || '201100133486',
+  waNumber:    localStorage.getItem('wa_number')    || '',
   sheetsUrl:   localStorage.getItem('sheets_url')   || 'https://script.google.com/macros/s/AKfycbzmJgm3GXKbMV65yeX5YWAxprnNg0uoheEMCHUr6J7SKgTssBX9MvKpStWNkaDHwz9J/exec',
 };
 
